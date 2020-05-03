@@ -12,7 +12,7 @@
     <param name="transform_tolerance" value="0.2"/>
 
     <param name="max_particles" value="3000"/>
-    <param name="min_particles" value="300"/>
+    <param name="min_particles" value="500"/>
     <param name="update_min_d" value="0.05"/>
     <param name="update_min_a" value="0.1"/>
 
@@ -20,8 +20,8 @@
     <param name="laser_max_range" value="29"/>
     <param name="laser_max_beam" value="15"/>
 
-    <param name="laser_z_hit" value="0.95"/>
-    <param name="laser_z_rand" value="0.05"/>
+    <param name="laser_z_hit" value="0.98"/>
+    <param name="laser_z_rand" value="0.02"/>
 
     <param name="initial_pose_x" value="0.05"/>
     <param name="initial_pose_y" value="0.05"/>
@@ -29,7 +29,7 @@
   </node>
 
   <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
-    <remap from="scan" to="my_robot/laser/scan"></remap>
+    <remap from="scan" to="/scan"></remap>
     <param name="base_global_planner" value="navfn/NavfnROS"/>
     <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
     <rosparam file="$(find my_robot)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
