@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <node
+    name="teleop_twist_keyboard"
+    pkg="teleop_twist_keyboard"
+    type="teleop_twist_keyboard.py"
+    respawn="false"
+    output="screen"
+    args='_speed:=0.35 _turn:=0.5'
+    />
+</launch>
