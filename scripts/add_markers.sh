@@ -6,5 +6,5 @@ sleep 5
 gnome-terminal -- roslaunch my_robot amcl.launch &
 sleep 5
 
-gnome-terminal -- rosrun add_markers add_markers &
+gnome-terminal -- rosrun add_markers add_markers _env:=test &
 

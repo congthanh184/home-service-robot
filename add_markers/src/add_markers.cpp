@@ -42,21 +42,7 @@ visualization_msgs::Marker getDefaultMarker(uint8_t id) {
   return marker;
 }
 
-int main(int argc, char** argv) {
-  ros::init(argc, argv, "add_markers");
-  ros::NodeHandle n;
-  ros::Publisher marker_pub =
-      n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-
-  // Publish the marker
-  while (marker_pub.getNumSubscribers() < 1) {
-    if (!ros::ok()) {
-      return 0;
-    }
-    ROS_WARN_ONCE("Please create a subscriber to the marker");
-    sleep(1);
-  }
-
+void runTestAddMarkers() {
   visualization_msgs::Marker marker = getDefaultMarker(0);
 
   marker.pose.position.x = 3;
@@ -66,6 +52,35 @@ int main(int argc, char** argv) {
 
   marker.pose.position.x = -3;
   marker_pub.publish(marker);
+}
+
+int main(int argc, char** argv) {
+  ros::init(argc, argv, "add_markers");
+  ros::NodeHandle n("~");
+  ros::Publisher marker_pub =
+      n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
+
+  Publish the marker
+  while (marker_pub.getNumSubscribers() < 1) {
+    if (!ros::ok()) {
+      return 0;
+    }
+    ROS_WARN_ONCE("Please create a subscriber to the marker");
+    sleep(1);
+  }
+
+  std::string env;
+  n.getParam("env", env);
+
+  std::cout << env << std::endl;
+  ROS_INFO("%s", env.c_str());
+  if (env.compare("test")==0) {
+    ROS_INFO("Test Add Marker");
+    runTestAddMarkers();
+  } else {
+    ROS_INFO("Spin Add Marker Service");
+  }
+
   ros::spin();
   return 0;
 }
