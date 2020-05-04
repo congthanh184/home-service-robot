@@ -10,6 +10,7 @@ Panels:
         - /Local Map1
         - /Local Map1/Planner1
         - /Local Map1/Trajectory Cloud1
+        - /Marker1
       Splitter Ratio: 0.5
     Tree Height: 635
   - Class: rviz/Selection
@@ -364,10 +365,10 @@ Visualization Manager:
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /visualization_marker
+      Marker Topic: /add_markers/visualization_marker
       Name: Marker
       Namespaces:
-        basic_shapes: true
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
