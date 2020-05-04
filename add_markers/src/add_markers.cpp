@@ -1,5 +1,9 @@
 #include <ros/ros.h>
+#include <std_msgs/Float32.h>
 #include <visualization_msgs/Marker.h>
+#include "add_markers/AddMarker.h"
+
+ros::Publisher markerPub;
 
 visualization_msgs::Marker getDefaultMarker(uint8_t id) {
   // Set our initial shape type to be a cube
@@ -46,22 +50,32 @@ void runTestAddMarkers() {
   visualization_msgs::Marker marker = getDefaultMarker(0);
 
   marker.pose.position.x = 3;
-  marker_pub.publish(marker);
+  markerPub.publish(marker);
 
   ros::Duration(10).sleep();
 
   marker.pose.position.x = -3;
-  marker_pub.publish(marker);
+  markerPub.publish(marker);
+}
+
+bool handle_command(add_markers::AddMarker::Request& req,
+                    add_markers::AddMarker::Response& res) {
+  ROS_INFO("x: %1.2f, y: %1.2f", (float)req.x, (float)req.y);
+
+  visualization_msgs::Marker marker = getDefaultMarker(0);
+  marker.pose.position.x = (float)req.x;
+  marker.pose.position.y = (float)req.y;
+  markerPub.publish(marker);
+  return true;
 }
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "add_markers");
   ros::NodeHandle n("~");
-  ros::Publisher marker_pub =
+  markerPub =
       n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
 
-  Publish the marker
-  while (marker_pub.getNumSubscribers() < 1) {
+  while (markerPub.getNumSubscribers() < 1) {
     if (!ros::ok()) {
       return 0;
     }
@@ -74,11 +88,12 @@ int main(int argc, char** argv) {
 
   std::cout << env << std::endl;
   ROS_INFO("%s", env.c_str());
-  if (env.compare("test")==0) {
+  if (env.compare("test") == 0) {
     ROS_INFO("Test Add Marker");
     runTestAddMarkers();
   } else {
     ROS_INFO("Spin Add Marker Service");
+    ros::ServiceServer service = n.advertiseService("/add_markers/add_marker", handle_command);
   }
 
   ros::spin();
