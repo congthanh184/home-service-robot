@@ -42,7 +42,6 @@ visualization_msgs::Marker getDefaultMarker(uint8_t id) {
   marker.color.b = 0.0f;
   marker.color.a = 1.0;
 
-  marker.lifetime = ros::Duration(5);
   return marker;
 }
 
@@ -50,6 +49,7 @@ void runTestAddMarkers() {
   visualization_msgs::Marker marker = getDefaultMarker(0);
 
   marker.pose.position.x = 3;
+  marker.lifetime = ros::Duration(5);
   markerPub.publish(marker);
 
   ros::Duration(10).sleep();
@@ -60,11 +60,19 @@ void runTestAddMarkers() {
 
 bool handle_command(add_markers::AddMarker::Request& req,
                     add_markers::AddMarker::Response& res) {
-  ROS_INFO("x: %1.2f, y: %1.2f", (float)req.x, (float)req.y);
+  ROS_INFO("x: %1.2f, y: %1.2f, action: %s", (float)req.x, (float)req.y,
+           req.action.c_str());
 
   visualization_msgs::Marker marker = getDefaultMarker(0);
   marker.pose.position.x = (float)req.x;
   marker.pose.position.y = (float)req.y;
+
+  if (req.action == "PICK") {
+    marker.action = visualization_msgs::Marker::DELETE;
+  } else if (req.action == "PLACE") {
+    marker.action = visualization_msgs::Marker::ADD;
+  }
+
   markerPub.publish(marker);
   return true;
 }
@@ -83,17 +91,17 @@ int main(int argc, char** argv) {
     sleep(1);
   }
 
+  ROS_INFO("Spin Add Marker Service");
+  ros::ServiceServer service =
+      n.advertiseService("/add_markers/add_marker", handle_command);
+
   std::string env;
   n.getParam("env", env);
 
-  std::cout << env << std::endl;
   ROS_INFO("%s", env.c_str());
   if (env.compare("test") == 0) {
     ROS_INFO("Test Add Marker");
     runTestAddMarkers();
-  } else {
-    ROS_INFO("Spin Add Marker Service");
-    ros::ServiceServer service = n.advertiseService("/add_markers/add_marker", handle_command);
   }
 
   ros::spin();
