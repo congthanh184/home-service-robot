@@ -37,6 +37,5 @@
               -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"
   />
 
-  <node name="rviz" pkg="rviz" type="rviz" respawn="false" args='-d $(find my_robot)/world/navigation.rviz'/>
 </launch>
 
