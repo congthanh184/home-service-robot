@@ -6,9 +6,13 @@ Project utilises ROS, gazebo and rviz to simulate environment and robot with lid
 ## Map Setup with ACML and Teleop packages
 
 Run `scripts/test_slam.sh`
+
 Manually move the robot to explore the map.
+
 Then, open the `rtabmap.db` by using `rtabmap-databaseViewer ~/.ros/rtabmap.db`
+
 Select `File > Export optimized 2D map` to build the 2D map.
+
 Alternatively, run 
 
 ```
