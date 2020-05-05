@@ -20,7 +20,9 @@ rosservice call /publish_map 1 1 0
 ## Test run
 
 To test navigation, including cost_map, run `scripts/test_navigation.sh`
+
 To test move to target pose alone, run `scripts/pick_objects.sh`
+
 To test display markers as virtual objects, run `scripts/add_markers`
 
 ## Put together
