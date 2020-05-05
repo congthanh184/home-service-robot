@@ -1,9 +1,9 @@
 #!/bin/sh
 
-gnome-terminal -- gazebo  &
+xterm -e " gazebo " &
 sleep 5
 
-gnome-terminal -- roscore &
+xterm -e " roscore " &
 sleep 5
 
-gnome-terminal -- rosrun rviz rviz
+xterm -e " rosrun rviz rviz "
